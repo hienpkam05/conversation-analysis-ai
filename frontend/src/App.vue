@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
+import MatchingWorkspace from "./MatchingWorkspace.vue";
 
 const selectedFile = ref(null);
 const isDragging = ref(false);
@@ -9,6 +10,7 @@ const error = ref("");
 const errorDetail = ref("");
 const colabStatus = ref("");
 const result = ref(null);
+const activeView = ref("transcribe");
 
 const savedColabUrl = localStorage.getItem("colab_api_url") || "";
 const form = ref({
@@ -138,10 +140,15 @@ async function submit() {
     <aside class="sidebar">
       <div>
         <p class="eyebrow">AI Recruitment Lab</p>
-        <h1>Chuyển hội thoại tư vấn tuyển dụng thành văn bản</h1>
+        <h1>{{ activeView === "transcribe" ? "Chuyển hội thoại tư vấn tuyển dụng thành văn bản" : "Ghép ứng viên với recruiter" }}</h1>
       </div>
 
-      <section class="control-group">
+      <nav class="workspace-tabs" aria-label="Không gian làm việc">
+        <button :class="{ active: activeView === 'transcribe' }" @click="activeView = 'transcribe'">Hội thoại</button>
+        <button :class="{ active: activeView === 'matching' }" @click="activeView = 'matching'">Ghép ứng viên</button>
+      </nav>
+
+      <section v-if="activeView === 'transcribe'" class="control-group">
         <label>
           Chế độ xử lý
           <select v-model="form.engine">
@@ -211,7 +218,7 @@ async function submit() {
       </section>
     </aside>
 
-    <section class="workspace">
+    <section v-if="activeView === 'transcribe'" class="workspace">
       <div class="topbar">
         <div>
           <h2>Upload audio</h2>
@@ -282,5 +289,6 @@ async function submit() {
         </article>
       </section>
     </section>
+    <MatchingWorkspace v-else />
   </main>
 </template>
