@@ -1,12 +1,12 @@
 # Matching Service
 
-FastAPI service độc lập cho bài toán ghép ứng viên với nhân viên tuyển dụng. Đặc tả 001 tạo nền kỹ thuật; Đặc tả 002 bổ sung schema PostgreSQL, Alembic migration và dữ liệu seed. Thuật toán matching, embedding và Qdrant collection chưa được triển khai.
+FastAPI service độc lập cho bài toán ghép ứng viên với nhân viên tuyển dụng. Các đặc tả 001-006 đã triển khai nền tảng kỹ thuật, schema PostgreSQL, dữ liệu mẫu, hard filter, profile embedding, PhoBERT, Qdrant retrieval, tính điểm hybrid và giao diện Vue.
 
 ## Thành phần
 
 - FastAPI tại `http://localhost:8001`
 - PostgreSQL cho dữ liệu nghiệp vụ
-- Qdrant cho vector retrieval ở các đặc tả tiếp theo
+- Qdrant cho vector retrieval PhoBERT của recruiter và chiến dịch
 - SQLAlchemy 2.x async và Alembic
 
 ## Chạy bằng Docker Compose
