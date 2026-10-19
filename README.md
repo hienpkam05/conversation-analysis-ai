@@ -99,6 +99,23 @@ Mở trình duyệt tại `http://127.0.0.1:5173`, chọn tab **Ghép ứng viê
 
 ## Xem dữ liệu
 
+### Đánh giá chất lượng tư vấn bản local
+
+Chức năng chấm thủ công chạy qua Django, không dùng API matching. Khởi động Django bằng môi trường Python đã cài dependency:
+
+```powershell
+venv\Scripts\python.exe backend\manage.py migrate
+venv\Scripts\python.exe backend\manage.py runserver 127.0.0.1:8000
+```
+
+Chạy Vue như bước 5 rồi chọn **Đánh giá tư vấn**. Nhập văn bản hoặc chuyển audio ở tab Hội thoại và bấm **Lấy hội thoại từ audio** trong tab đánh giá. Kiểm tra người nói, chọn tiêu chí và lời thoại dẫn chứng, chấm điểm rồi lưu. Dữ liệu lưu trong SQLite của Django (`backend/db.sqlite3`), không phải PostgreSQL matching. Danh sách hội thoại cho phép mở lại các bản đã lưu.
+
+Bộ tiêu chí hiện vẫn chờ duyệt nghiệp vụ thật; đã có đăng nhập, phân quyền, quản lý rubric, chấm kép và duyệt nhãn. Trước khi mở tab, tạo tài khoản bằng `venv\Scripts\python.exe -X utf8 backend\manage.py quality_user nguoi_duyet --reviewer --assign-pilot`. Mật khẩu nhập ẩn, không có giá trị mặc định. Hai tài khoản người chấm và luồng pilot được hướng dẫn tại [quickstart.md](specs/007-consultation-quality/quickstart.md). Chưa có model ViDeBERTa fine-tune hoặc tự train. Đây là môi trường localhost, không phải cấu hình phát hành Internet. Dữ liệu/audio/database cá nhân không được đưa lên Git.
+
+Trước khi chấm hàng loạt, đọc [hướng dẫn gán nhãn](specs/007-consultation-quality/ANNOTATION_GUIDE.md) và [phiếu chấm thử](specs/007-consultation-quality/PILOT_REVIEW.md). Trên web có mức điểm/ví dụ của quality-draft-v2 để tra ngay; tiêu chí và nhãn vẫn cần người phụ trách duyệt trước khi train.
+
+Khung Chấm AI đã có hàng đợi/tiến độ/worker và bản sửa thủ công riêng, nhưng chưa có checkpoint chất lượng tư vấn thật. Thiếu model thì hệ thống khóa gửi và không tạo điểm. Cách cấu hình runtime sau khi có model đã duyệt: [AI_RUNTIME.md](specs/007-consultation-quality/AI_RUNTIME.md). Chuẩn bị nhãn và baseline: [TRAINING.md](specs/007-consultation-quality/TRAINING.md). Database matching trên Docker không mặc nhiên chứa nhãn chất lượng tư vấn.
+
 ### PostgreSQL qua pgAdmin/DBeaver
 
 Tạo kết nối mới với các thông tin:

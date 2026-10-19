@@ -40,5 +40,6 @@ Vue có tab `Ghép ứng viên` trong ứng dụng hiện tại. Người dùng 
 
 ## Ngoài phạm vi
 
-- Chưa persist `matching_runs`/`matching_results`: Spec 007.
-- Chưa có thao tác chọn recruiter và khóa workload transactionally: Spec 008.
+- Chưa lưu `matching_runs`/`matching_results`: hạng mục matching tiếp theo, chưa gán số đặc tả.
+- Chưa có thao tác chọn recruiter và cập nhật workload trong transaction: chưa gán số đặc tả.
+- Spec 007 dành cho bài toán đánh giá chất lượng tư vấn, theo thứ tự ưu tiên mới.
