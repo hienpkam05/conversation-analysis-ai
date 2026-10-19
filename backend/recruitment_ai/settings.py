@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,6 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "transcriptions",
+    "consultation_quality",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,14 @@ LANGUAGE_CODE = "vi"
 TIME_ZONE = "Asia/Ho_Chi_Minh"
 USE_I18N = True
 USE_TZ = True
+CSRF_TRUSTED_ORIGINS = [
+    f"http://{host}:{port}"
+    for host in ("127.0.0.1", "localhost")
+    for port in (5173, 5174, 5175)
+]
+CSRF_FAILURE_VIEW = "consultation_quality.review_views.csrf_failure"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
 
 STATIC_URL = "static/"
 MEDIA_URL = "media/"
@@ -75,3 +85,8 @@ WHISPER_COMPUTE_TYPE = "int8"
 WHISPER_CPU_THREADS = 8
 WHISPER_OUTPUT_DIR = PROJECT_ROOT / "output"
 HUGGINGFACE_CACHE_DIR = PROJECT_ROOT / "models" / "huggingface"
+
+QUALITY_MODEL_DIR = os.environ.get("QUALITY_MODEL_DIR", "")
+QUALITY_JOB_TIMEOUT = 900
+QUALITY_QUEUE_LIMIT = 20
+QUALITY_USER_QUEUE_LIMIT = 2
