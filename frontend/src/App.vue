@@ -1,8 +1,10 @@
 <script setup>
 import { computed, ref } from "vue";
 import MatchingWorkspace from "./MatchingWorkspace.vue";
+import QualityWorkspace from "./QualityWorkspace.vue";
 
 const selectedFile = ref(null);
+const qualityAudioUrl = ref("");
 const isDragging = ref(false);
 const isLoading = ref(false);
 const isCheckingColab = ref(false);
@@ -57,6 +59,8 @@ function dropFile(event) {
 }
 
 function setFile(file) {
+  if (qualityAudioUrl.value) URL.revokeObjectURL(qualityAudioUrl.value);
+  qualityAudioUrl.value = URL.createObjectURL(file);
   selectedFile.value = file;
   result.value = null;
   error.value = "";
@@ -140,12 +144,13 @@ async function submit() {
     <aside class="sidebar">
       <div>
         <p class="eyebrow">AI Recruitment Lab</p>
-        <h1>{{ activeView === "transcribe" ? "Chuyển hội thoại tư vấn tuyển dụng thành văn bản" : "Ghép ứng viên với recruiter" }}</h1>
+        <h1>{{ activeView === "transcribe" ? "Chuyển hội thoại tư vấn tuyển dụng thành văn bản" : activeView === "matching" ? "Ghép ứng viên với recruiter" : "Đánh giá chất lượng tư vấn" }}</h1>
       </div>
 
       <nav class="workspace-tabs" aria-label="Không gian làm việc">
         <button :class="{ active: activeView === 'transcribe' }" @click="activeView = 'transcribe'">Hội thoại</button>
         <button :class="{ active: activeView === 'matching' }" @click="activeView = 'matching'">Ghép ứng viên</button>
+        <button :class="{ active: activeView === 'quality' }" @click="activeView = 'quality'">Đánh giá tư vấn</button>
       </nav>
 
       <section v-if="activeView === 'transcribe'" class="control-group">
@@ -289,6 +294,7 @@ async function submit() {
         </article>
       </section>
     </section>
-    <MatchingWorkspace v-else />
+    <MatchingWorkspace v-else-if="activeView === 'matching'" />
+    <KeepAlive><QualityWorkspace v-if="activeView === 'quality'" :transcript="result" :audio-url="qualityAudioUrl" /></KeepAlive>
   </main>
 </template>

@@ -25,6 +25,8 @@ backend/staticfiles/
 
 # Generated transcripts and uploads
 output/
+data/quality_audio/
+data/quality_dataset/
 *.wav
 *_preprocessed.wav
 *_transcript.txt
