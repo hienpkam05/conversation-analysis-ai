@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "transcriptions",
     "consultation_quality",
+    "conversation_followup",
 ]
 
 MIDDLEWARE = [

@@ -8,6 +8,7 @@ class QualityMigrationTests(TransactionTestCase):
         before = [("consultation_quality", "0004_audiosample_review_disposition_and_more")]
         after = [("consultation_quality", "0007_qualityworkerslot_assessment_inference_metadata_and_more")]
         executor = MigrationExecutor(connection)
+        latest_targets = executor.loader.graph.leaf_nodes()
         executor.migrate(before)
         try:
             apps = executor.loader.project_state(before).apps
@@ -40,4 +41,4 @@ class QualityMigrationTests(TransactionTestCase):
             self.assertIsNone(migrated.author_id)
             self.assertIsNone(migrated.reviewer_id)
         finally:
-            MigrationExecutor(connection).migrate(after)
+            MigrationExecutor(connection).migrate(latest_targets)

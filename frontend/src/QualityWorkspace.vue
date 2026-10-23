@@ -80,12 +80,14 @@ async function signIn() {
   try { session.value = await api("session/", {username: username.value, password: password.value}); }
   finally { password.value = ""; }
   await loadWorkspace();
+  window.dispatchEvent(new Event("recruitment-session-changed"));
 }
 async function signOut() {
   if (!canLeave()) return;
   session.value = await api("session/", {}, "DELETE");
   dirty.value = false; ratingDirty.value = false; reviewDirty.value = false;
   newConversation(); samples.value = []; conversations.value = [];
+  window.dispatchEvent(new Event("recruitment-session-changed"));
 }
 async function reloadGovernance() {
   const version = rubric.value.version;
@@ -270,7 +272,7 @@ onUnmounted(() => { clearInterval(refreshTimer); window.removeEventListener("bef
         </div>
       </section>
       <div class="quality-actions">
-        <label>Hội thoại đã lưu<select :value="conversationId || ''" @change="action(async () => { if (canLeave()) { selectedSample = ''; await openConversation($event.target.value); } })">
+        <label>Hội thoại đã lưu<select aria-label="Hội thoại đã lưu" :value="conversationId || ''" @change="action(async () => { if (canLeave()) { selectedSample = ''; await openConversation($event.target.value); } })">
           <option value="" disabled>Chọn hội thoại</option>
           <option v-for="c in conversations" :key="c.id" :value="c.id">{{ c.title }} · {{ new Date(c.created_at).toLocaleString('vi-VN') }}</option>
         </select></label>

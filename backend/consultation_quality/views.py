@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import transaction, IntegrityError, OperationalError
 from django.db.models import Q
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse, FileResponse, StreamingHttpResponse
+from django.http import JsonResponse, FileResponse, StreamingHttpResponse, Http404
 from django.views.decorators.csrf import csrf_protect
 
 from .models import Assessment, AudioSample, Conversation, Revision, RubricVersion, AssessmentJob
@@ -36,7 +36,7 @@ def endpoint(methods, public=False):
             except InferenceError as exc:
                 status = 409 if exc.code in ("RUBRIC_MODEL_MISMATCH", "MODEL_CHANGED") else 422 if exc.code == "RUBRIC_NOT_APPROVED" else 503
                 return JsonResponse({"error": {"code": exc.code, "message": str(exc)}}, status=status)
-            except (Conversation.DoesNotExist, Revision.DoesNotExist, Assessment.DoesNotExist, AudioSample.DoesNotExist, RubricVersion.DoesNotExist, AssessmentJob.DoesNotExist):
+            except (Http404, Conversation.DoesNotExist, Revision.DoesNotExist, Assessment.DoesNotExist, AudioSample.DoesNotExist, RubricVersion.DoesNotExist, AssessmentJob.DoesNotExist):
                 return JsonResponse({"error": {"code": "NOT_FOUND", "message": "Không tìm thấy dữ liệu."}}, status=404)
             except IntegrityError:
                 return JsonResponse({"error": {"code": "WRITE_CONFLICT", "message": "Dữ liệu vừa được thay đổi hoặc vi phạm ràng buộc. Tải lại trước khi lưu."}}, status=409)

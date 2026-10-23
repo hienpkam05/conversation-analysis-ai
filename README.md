@@ -1,9 +1,11 @@
 # AI Recruitment Lab
 
-Ứng dụng hỗ trợ tuyển dụng lao động tạm thời gồm hai chức năng:
+Ứng dụng hỗ trợ tuyển dụng lao động tạm thời gồm các chức năng:
 
 - Chuyển file ghi âm tư vấn tuyển dụng thành văn bản.
 - Ghép ứng viên với recruiter phù hợp dựa trên điều kiện nghiệp vụ, PhoBERT và Qdrant.
+- Chấm thủ công chất lượng tư vấn và quản lý nhãn có duyệt.
+- Tóm tắt trích dẫn hội thoại, sửa/duyệt nội dung và xác nhận lịch hẹn nội bộ.
 
 ## Kiến trúc
 
@@ -115,6 +117,10 @@ Bộ tiêu chí hiện vẫn chờ duyệt nghiệp vụ thật; đã có đăng
 Trước khi chấm hàng loạt, đọc [hướng dẫn gán nhãn](specs/007-consultation-quality/ANNOTATION_GUIDE.md) và [phiếu chấm thử](specs/007-consultation-quality/PILOT_REVIEW.md). Trên web có mức điểm/ví dụ của quality-draft-v2 để tra ngay; tiêu chí và nhãn vẫn cần người phụ trách duyệt trước khi train.
 
 Khung Chấm AI đã có hàng đợi/tiến độ/worker và bản sửa thủ công riêng, nhưng chưa có checkpoint chất lượng tư vấn thật. Thiếu model thì hệ thống khóa gửi và không tạo điểm. Cách cấu hình runtime sau khi có model đã duyệt: [AI_RUNTIME.md](specs/007-consultation-quality/AI_RUNTIME.md). Chuẩn bị nhãn và baseline: [TRAINING.md](specs/007-consultation-quality/TRAINING.md). Database matching trên Docker không mặc nhiên chứa nhãn chất lượng tư vấn.
+
+### Tóm tắt và lịch hẹn
+
+Chọn tab **Tóm tắt & lịch hẹn**, dùng chung tài khoản và hội thoại của phần đánh giá tư vấn. Bản đầu chọn trích dẫn theo quy tắc và giữ dẫn chứng nguồn, chưa dùng model mT5 đã train. Transcript/vai người nói cần được kiểm tra trước khi duyệt tóm tắt. Lịch phải có ngày giờ cụ thể và xác nhận của người dùng; không tự gửi calendar/email/SMS. Xem [hướng dẫn Spec 008](specs/008-conversation-followup/quickstart.md), gồm cấu hình local Django 8002/Vue 5175 khi cổng 8000 bị chiếm.
 
 ### PostgreSQL qua pgAdmin/DBeaver
 
