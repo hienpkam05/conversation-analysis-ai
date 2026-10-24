@@ -3,6 +3,8 @@ import { computed, ref, onMounted, onUnmounted } from "vue";
 import MatchingWorkspace from "./MatchingWorkspace.vue";
 import QualityWorkspace from "./QualityWorkspace.vue";
 import FollowupWorkspace from "./FollowupWorkspace.vue";
+import CandidateStatusWorkspace from "./CandidateStatusWorkspace.vue";
+import CandidateInfoWorkspace from "./CandidateInfoWorkspace.vue";
 
 const authVersion = ref(0);
 function refreshSessionViews() { authVersion.value++; }
@@ -150,7 +152,7 @@ async function submit() {
     <aside class="sidebar">
       <div>
         <p class="eyebrow">AI Recruitment Lab</p>
-        <h1>{{ activeView === "transcribe" ? "Chuyển hội thoại tư vấn tuyển dụng thành văn bản" : activeView === "matching" ? "Ghép ứng viên với recruiter" : activeView === "quality" ? "Đánh giá chất lượng tư vấn" : "Tóm tắt và lịch hẹn" }}</h1>
+        <h1>{{ activeView === "transcribe" ? "Chuyển hội thoại tư vấn tuyển dụng thành văn bản" : activeView === "matching" ? "Ghép ứng viên với recruiter" : activeView === "quality" ? "Đánh giá chất lượng tư vấn" : activeView === "followup" ? "Tóm tắt và lịch hẹn" : activeView === "candidate-status" ? "Trạng thái ứng viên" : "Thông tin và chiến dịch" }}</h1>
       </div>
 
       <nav class="workspace-tabs" aria-label="Không gian làm việc">
@@ -158,6 +160,8 @@ async function submit() {
         <button :class="{ active: activeView === 'matching' }" @click="activeView = 'matching'">Ghép ứng viên</button>
         <button :class="{ active: activeView === 'quality' }" @click="activeView = 'quality'">Đánh giá tư vấn</button>
         <button :class="{ active: activeView === 'followup' }" @click="activeView = 'followup'">Tóm tắt &amp; lịch hẹn</button>
+        <button :class="{ active: activeView === 'candidate-status' }" @click="activeView = 'candidate-status'">Trạng thái ứng viên</button>
+        <button :class="{ active: activeView === 'candidate-info' }" @click="activeView = 'candidate-info'">Thông tin &amp; chiến dịch</button>
       </nav>
 
       <section v-if="activeView === 'transcribe'" class="control-group">
@@ -304,5 +308,7 @@ async function submit() {
     <MatchingWorkspace v-else-if="activeView === 'matching'" />
     <KeepAlive :key="`quality-${authVersion}`"><QualityWorkspace v-if="activeView === 'quality'" :transcript="result" :audio-url="qualityAudioUrl" /></KeepAlive>
     <KeepAlive :key="`followup-${authVersion}`"><FollowupWorkspace v-if="activeView === 'followup'" /></KeepAlive>
+    <KeepAlive :key="`candidate-status-${authVersion}`"><CandidateStatusWorkspace v-if="activeView === 'candidate-status'" /></KeepAlive>
+    <KeepAlive :key="`candidate-info-${authVersion}`"><CandidateInfoWorkspace v-if="activeView === 'candidate-info'" /></KeepAlive>
   </main>
 </template>

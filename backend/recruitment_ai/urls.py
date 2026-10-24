@@ -9,6 +9,8 @@ urlpatterns = [
     path("api/", include("transcriptions.urls")),
     path("api/quality/", include("consultation_quality.urls")),
     path("api/followup/", include("conversation_followup.urls")),
+    path("api/candidate-status/", include("candidate_status.urls")),
+    path("api/candidate-info/", include("candidate_info.urls")),
 ]
 
 if settings.DEBUG:

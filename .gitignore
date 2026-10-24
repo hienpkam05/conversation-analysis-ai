@@ -12,6 +12,7 @@ htmlcov/
 # Virtual environments
 venv/
 .venv/
+.venv-status-ml/
 env/
 ENV/
 matching_service/.env
@@ -34,7 +35,7 @@ data/quality_dataset/
 *_transcript.json
 
 # Hugging Face/model cache
-models/
+/models/
 .cache/
 
 # Node/Vue/Vite

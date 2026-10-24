@@ -6,6 +6,8 @@
 - Ghép ứng viên với recruiter phù hợp dựa trên điều kiện nghiệp vụ, PhoBERT và Qdrant.
 - Chấm thủ công chất lượng tư vấn và quản lý nhãn có duyệt.
 - Tóm tắt trích dẫn hội thoại, sửa/duyệt nội dung và xác nhận lịch hẹn nội bộ.
+- Gợi ý trạng thái tương tác ứng viên theo quy tắc, lưu dẫn chứng và xác nhận thủ công.
+- Trích xuất/sửa/xác nhận thông tin hội thoại và tìm chiến dịch bằng matching hiện có.
 
 ## Kiến trúc
 
@@ -121,6 +123,16 @@ Khung Chấm AI đã có hàng đợi/tiến độ/worker và bản sửa thủ 
 ### Tóm tắt và lịch hẹn
 
 Chọn tab **Tóm tắt & lịch hẹn**, dùng chung tài khoản và hội thoại của phần đánh giá tư vấn. Bản đầu chọn trích dẫn theo quy tắc và giữ dẫn chứng nguồn, chưa dùng model mT5 đã train. Transcript/vai người nói cần được kiểm tra trước khi duyệt tóm tắt. Lịch phải có ngày giờ cụ thể và xác nhận của người dùng; không tự gửi calendar/email/SMS. Xem [hướng dẫn Spec 008](specs/008-conversation-followup/quickstart.md), gồm cấu hình local Django 8002/Vue 5175 khi cổng 8000 bị chiếm.
+
+### Trạng thái ứng viên
+
+Tab **Trạng thái ứng viên** dùng chung tài khoản/hội thoại Django. Chọn hội thoại, tạo gợi ý quy tắc, sửa bằng bản thủ công riêng, chọn lời ứng viên làm dẫn chứng rồi xác nhận. Có lịch sử và chặn xác nhận nguồn chưa kiểm tra/đã đổi; không tự loại hồ sơ hoặc tạo lịch. Bộ nhãn v1 là đề xuất cần nghiệm thu, chưa có ViDeBERTa đã train. Xem [hướng dẫn Spec 009](specs/009-candidate-status/quickstart.md).
+
+Phần chuẩn bị huấn luyện có duyệt bộ nhãn/nhãn độc lập trên web, báo cáo tiến độ, xuất/chia dữ liệu và script ViDeBERTa local. Chưa có nhãn/model thật thì nút AI khóa; không tự lấy rules làm nhãn chuẩn. Xem [quy trình train trạng thái](specs/009-candidate-status/TRAINING.md).
+
+### Thông tin và chiến dịch
+
+Tab **Thông tin & chiến dịch** trích xuất quy tắc từ lời ứng viên, hiển thị nguồn, cho sửa và xác nhận trước khi gửi query nghề nghiệp tới matching. Không tự tạo hồ sơ PostgreSQL/gán chiến dịch; chưa có PhoBERT NER đã fine-tune. Matching có API mới POST /api/v1/campaigns/search dùng Campaign/model refs/Qdrant đang có; cần chạy/rebuild image matching và có vector chiến dịch hiện hành. Xem [hướng dẫn Spec 010](specs/010-candidate-extraction/quickstart.md).
 
 ### PostgreSQL qua pgAdmin/DBeaver
 

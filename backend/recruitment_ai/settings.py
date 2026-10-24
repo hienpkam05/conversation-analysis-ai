@@ -4,6 +4,8 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = BASE_DIR.parent
+STATUS_MODEL_DIR = os.environ.get("STATUS_MODEL_DIR", "")
+MATCHING_API_URL = os.environ.get("MATCHING_API_URL", "http://127.0.0.1:8001")
 
 SECRET_KEY = "dev-only-change-me"
 DEBUG = True
@@ -19,6 +21,8 @@ INSTALLED_APPS = [
     "transcriptions",
     "consultation_quality",
     "conversation_followup",
+    "candidate_status",
+    "candidate_info",
 ]
 
 MIDDLEWARE = [

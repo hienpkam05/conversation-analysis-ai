@@ -1,0 +1,5 @@
+simulation: candidate-info-contract
+routing: path
+mocks:
+  - routeKey: matching
+    path: ../mocks/campaign-search/default.js
